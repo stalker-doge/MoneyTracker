@@ -180,35 +180,19 @@
                 <div class="card">
                     <div class="section-header">
                         <h2><i class="fas fa-history"></i> Recent Transactions</h2>
-                        <div class="header-actions">
-                            <div class="filters">
-                                <select id="categoryFilter">
-                                    <option value="">All Categories</option>
-                                    <option value="food">🍔 Food</option>
-                                    <option value="transport">🚗 Transport</option>
-                                    <option value="entertainment">🎬 Entertainment</option>
-                                    <option value="shopping">🛍️ Shopping</option>
-                                    <option value="bills">📄 Bills</option>
-                                    <option value="health">💊 Health</option>
-                                    <option value="education">📚 Education</option>
-                                    <option value="other">📦 Other</option>
-                                </select>
-                                <input type="month" id="monthFilter">
-                            </div>
-                            <div class="data-actions">
-                                <button class="btn btn-secondary" onclick="uiController.handleCSVExport()" title="Export transactions to CSV file">
-                                    <i class="fas fa-file-csv"></i> Export CSV
-                                </button>
-                                <button class="btn btn-secondary" onclick="uiController.exportData()" title="Export transactions to JSON file">
-                                    <i class="fas fa-download"></i> Export JSON
-                                </button>
-                                <button class="btn btn-secondary" onclick="uiController.showImportModal()" title="Import transactions from JSON file">
-                                    <i class="fas fa-upload"></i> Import JSON
-                                </button>
-                                <button class="btn btn-secondary" onclick="uiController.showCSVImportModal()" title="Import transactions from CSV file">
-                                    <i class="fas fa-file-csv"></i> Import CSV
-                                </button>
-                            </div>
+                        <div class="filters">
+                            <select id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="food">🍔 Food</option>
+                                <option value="transport">🚗 Transport</option>
+                                <option value="entertainment">🎬 Entertainment</option>
+                                <option value="shopping">🛍️ Shopping</option>
+                                <option value="bills">📄 Bills</option>
+                                <option value="health">💊 Health</option>
+                                <option value="education">📚 Education</option>
+                                <option value="other">📦 Other</option>
+                            </select>
+                            <input type="month" id="monthFilter">
                         </div>
                     </div>
                     <div class="transactions-list" id="transactionsList">
@@ -417,6 +401,34 @@
                 <div class="currency-preview">
                     <h4>Preview:</h4>
                     <div class="preview-amount" id="currencyPreview">£1,234.56</div>
+                </div>
+                
+                <div class="data-management-section">
+                    <h3><i class="fas fa-database"></i> Data Management</h3>
+                    
+                    <div class="data-management-group">
+                        <h4><i class="fas fa-download"></i> Export Data</h4>
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="uiController.handleCSVExport()" title="Export transactions to CSV file">
+                                <i class="fas fa-file-csv"></i> Export CSV
+                            </button>
+                            <button class="btn btn-secondary" onclick="uiController.exportData()" title="Export transactions to JSON file">
+                                <i class="fas fa-download"></i> Export JSON
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-management-group">
+                        <h4><i class="fas fa-upload"></i> Import Data</h4>
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="uiController.showImportModal()" title="Import transactions from JSON file">
+                                <i class="fas fa-upload"></i> Import JSON
+                            </button>
+                            <button class="btn btn-secondary" onclick="uiController.showCSVImportModal()" title="Import transactions from CSV file">
+                                <i class="fas fa-file-csv"></i> Import CSV
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-actions">

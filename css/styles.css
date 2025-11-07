@@ -679,6 +679,28 @@ body {
     .preview-amount {
         font-size: 1.3rem;
     }
+    
+    .data-management-section {
+        padding: 1rem;
+    }
+    
+    .data-management-section h3 {
+        font-size: 1rem;
+    }
+    
+    .data-management-group h4 {
+        font-size: 0.9rem;
+    }
+    
+    .button-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .button-group .btn {
+        min-width: auto;
+        flex: none;
+    }
 }
 
 /* Prevent horizontal overflow */
@@ -1079,4 +1101,54 @@ input[type="file"]:focus {
 /* Modal Content Adjustments for Settings */
 #settingsModal .modal-content {
     max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Data Management Section */
+.data-management-section {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.data-management-section h3 {
+    color: var(--bg-accent);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.data-management-group {
+    margin-bottom: 1.5rem;
+}
+
+.data-management-group:last-child {
+    margin-bottom: 0;
+}
+
+.data-management-group h4 {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.button-group .btn {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
 }
