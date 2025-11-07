@@ -1,0 +1,125 @@
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor and IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cache/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and Runtime Files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Dependency Directories (for future development tools)
+node_modules/
+jspm_packages/
+
+# Build Outputs (if build tools are added later)
+dist/
+build/
+out/
+.target/
+
+# Environment Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary Files
+*.tmp
+*.temp
+.temp/
+tmp/
+
+# Coverage Reports
+coverage/
+*.lcov
+
+# Package Manager Files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Backup Files
+*.bak
+*.backup
+*.old
+
+# Generated Documentation Files
+docs/build/
+
+# Test Files
+test-results/
+coverage/
+
+# Local Configuration Files
+config.local.js
+config.local.json
+
+# User-specific files
+*.user.js
+*.user.json
+
+# IDE workspace files
+*.code-workspace
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Windows
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Package files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Font Awesome Pro (if using paid version)
+@fortawesome
+
+# Chart.js files (if local copies are added)
+chart.js.local
+chart.min.js.local
+
+# Development server files
+.devcontainer/
+.eslintcache
