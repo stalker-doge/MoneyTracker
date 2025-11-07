@@ -1,22 +1,22 @@
 {
   "version": 2,
   "name": "money-tracker",
-  "routes": [
+  "headers": [
     {
-      "src": "/sw.js",
+      "source": "/sw.js",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "Service-Worker-Allowed": "/"
       }
     },
     {
-      "src": "/(css|js)/(.*)",
+      "source": "/(css|js)/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
     {
-      "src": "/(.*)",
+      "source": "/(.*)",
       "headers": {
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
@@ -24,29 +24,6 @@
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "geolocation=(), microphone=(), camera=()"
       }
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
     },
     {
       "source": "/css/(.*)",
@@ -63,19 +40,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/"
         }
       ]
     }
