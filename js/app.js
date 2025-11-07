@@ -98,16 +98,45 @@ class MoneyTrackerApp {
 
     // Initialize theme system
     initializeTheme() {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        // Load saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('moneyTrackerTheme') || 
+                      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         
-        // Add dark mode support (optional enhancement)
+        // Apply the theme
+        this.applyTheme(savedTheme);
+        
+        // Set up system preference listener
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
         prefersDark.addEventListener('change', (e) => {
-            if (e.matches) {
-                document.body.classList.add('dark-theme');
-            } else {
-                document.body.classList.remove('dark-theme');
-            }
+            const newTheme = e.matches ? 'dark' : 'light';
+            this.applyTheme(newTheme);
+            localStorage.setItem('moneyTrackerTheme', newTheme);
         });
+        
+        // Set up theme toggle button
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (themeToggle && themeIcon) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.body.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                this.applyTheme(newTheme);
+                localStorage.setItem('moneyTrackerTheme', newTheme);
+            });
+        }
+    }
+
+    // Apply theme to the document
+    applyTheme(theme) {
+        document.body.setAttribute('data-theme', theme);
+        
+        const themeIcon = document.getElementById('themeIcon');
+        if (themeIcon) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            themeToggle.title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        }
     }
 
     // Initialize keyboard shortcuts

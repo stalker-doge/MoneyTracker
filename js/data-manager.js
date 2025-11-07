@@ -3,8 +3,14 @@ class DataManager {
     constructor() {
         this.storageKey = 'moneyTrackerData';
         this.budgetStorageKey = 'moneyTrackerBudget';
-        this.currencyStorageKey = 'moneyTrackerCurrency';
+        this.goalsStorageKey = 'moneyTrackerGoals';
+        this.budgetsStorageKey = 'moneyTrackerBudgets';
+        this.settingsStorageKey = 'moneyTrackerSettings';
+        this.activeBudgetStorageKey = 'moneyTrackerActiveBudget';
         this.transactions = [];
+        this.budgets = [];
+        this.goals = [];
+        this.activeBudgetId = 'default';
         this.budget = 1000; // Default monthly budget in GBP
         this.currency = 'GBP'; // Default currency
         this.initializeData();
