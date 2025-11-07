@@ -12,6 +12,7 @@ class UIController {
             this.quickAddForm = document.getElementById('quickAddForm');
             this.editForm = document.getElementById('editForm');
             this.budgetForm = document.getElementById('budgetForm');
+            this.settingsForm = document.getElementById('settingsForm');
             
             // Inputs
             this.expenseAmount = document.getElementById('expenseAmount');
@@ -31,6 +32,14 @@ class UIController {
             this.currentBudgetDisplay = document.getElementById('currentBudgetDisplay');
             this.currentSpendingDisplay = document.getElementById('currentSpendingDisplay');
             this.newRemainingDisplay = document.getElementById('newRemainingDisplay');
+            
+            // Settings modal inputs
+            this.currencySelect = document.getElementById('currencySelect');
+            this.customCurrencyFields = document.getElementById('customCurrencyFields');
+            this.customCurrencyCode = document.getElementById('customCurrencyCode');
+            this.customCurrencySymbol = document.getElementById('customCurrencySymbol');
+            this.symbolPosition = document.getElementById('symbolPosition');
+            this.currencyPreview = document.getElementById('currencyPreview');
             
             // Filters
             this.categoryFilter = document.getElementById('categoryFilter');
@@ -53,9 +62,11 @@ class UIController {
             // Modals
             this.editModal = document.getElementById('editModal');
             this.budgetModal = document.getElementById('budgetModal');
+            this.settingsModal = document.getElementById('settingsModal');
             this.importModal = document.getElementById('importModal');
             this.csvImportModal = document.getElementById('csvImportModal');
             this.closeModal = document.querySelector('.close');
+            this.settingsToggle = document.getElementById('settingsToggle');
             
             // Import form elements
             this.importForm = document.getElementById('importForm');
@@ -78,11 +89,21 @@ class UIController {
         this.quickAddForm.addEventListener('submit', (e) => this.handleQuickAdd(e));
         this.editForm.addEventListener('submit', (e) => this.handleEditSubmit(e));
         this.budgetForm.addEventListener('submit', (e) => this.handleBudgetSubmit(e));
+        this.settingsForm.addEventListener('submit', (e) => this.handleSettingsSubmit(e));
         this.importForm.addEventListener('submit', (e) => this.handleImportSubmit(e));
         this.csvImportForm.addEventListener('submit', (e) => this.handleCSVImportSubmit(e));
         
+        // Settings form input changes
+        this.currencySelect.addEventListener('change', () => this.handleCurrencyChange());
+        this.customCurrencyCode.addEventListener('input', () => this.updateCurrencyPreview());
+        this.customCurrencySymbol.addEventListener('input', () => this.updateCurrencyPreview());
+        this.symbolPosition.addEventListener('change', () => this.updateCurrencyPreview());
+        
         // Budget form input change
         this.newBudgetAmount.addEventListener('input', () => this.updateBudgetPreview());
+        
+        // Settings toggle
+        this.settingsToggle.addEventListener('click', () => this.showSettingsModal());
         
         // Filters
         this.categoryFilter.addEventListener('change', () => this.updateTransactionsList());
@@ -97,6 +118,9 @@ class UIController {
             if (e.target === this.budgetModal) {
                 this.closeBudgetModal();
             }
+            if (e.target === this.settingsModal) {
+                this.closeSettingsModal();
+            }
             if (e.target === this.importModal) {
                 this.closeImportModal();
             }
@@ -110,6 +134,7 @@ class UIController {
             if (e.key === 'Escape') {
                 this.closeEditModal();
                 this.closeBudgetModal();
+                this.closeSettingsModal();
                 this.closeImportModal();
                 this.closeCSVImportModal();
             }
@@ -427,10 +452,143 @@ class UIController {
 
     // Format currency
     formatCurrency(amount) {
-        return new Intl.NumberFormat('en-GB', {
-            style: 'currency',
-            currency: 'GBP'
-        }).format(amount);
+        return window.dataManager.formatCurrency(amount);
+    }
+
+    // Show settings modal
+    showSettingsModal() {
+        const currentSettings = window.dataManager.getCurrencySettings();
+        
+        // Populate modal with current values
+        this.currencySelect.value = currentSettings.code;
+        this.customCurrencyCode.value = currentSettings.code;
+        this.customCurrencySymbol.value = currentSettings.symbol;
+        this.symbolPosition.value = currentSettings.symbolPosition;
+        
+        // Show/hide custom fields based on selection
+        this.handleCurrencyChange();
+        
+        // Update preview
+        this.updateCurrencyPreview();
+        
+        // Show modal
+        this.settingsModal.style.display = 'block';
+        
+        // Focus on currency select
+        setTimeout(() => this.currencySelect.focus(), 100);
+    }
+
+    // Close settings modal
+    closeSettingsModal() {
+        this.settingsModal.style.display = 'none';
+        this.settingsForm.reset();
+    }
+
+    // Handle currency change
+    handleCurrencyChange() {
+        const selectedValue = this.currencySelect.value;
+        
+        if (selectedValue === 'custom') {
+            this.customCurrencyFields.style.display = 'block';
+        } else {
+            this.customCurrencyFields.style.display = 'none';
+        }
+        
+        this.updateCurrencyPreview();
+    }
+
+    // Update currency preview
+    updateCurrencyPreview() {
+        const selectedValue = this.currencySelect.value;
+        let previewSettings;
+        
+        if (selectedValue === 'custom') {
+            previewSettings = {
+                code: this.customCurrencyCode.value || 'USD',
+                symbol: this.customCurrencySymbol.value || '$',
+                symbolPosition: this.symbolPosition.value,
+                locale: 'en-US'
+            };
+        } else if (selectedValue) {
+            const currency = window.dataManager.getAvailableCurrencies().find(c => c.code === selectedValue);
+            if (currency) {
+                previewSettings = {
+                    code: currency.code,
+                    symbol: currency.symbol,
+                    symbolPosition: window.dataManager.getSymbolPosition(currency.locale),
+                    locale: currency.locale
+                };
+            }
+        }
+        
+        if (previewSettings) {
+            try {
+                this.currencyPreview.textContent = new Intl.NumberFormat(previewSettings.locale, {
+                    style: 'currency',
+                    currency: previewSettings.code
+                }).format(1234.56);
+            } catch (error) {
+                // Fallback to manual formatting
+                const formattedAmount = '1234.56';
+                if (previewSettings.symbolPosition === 'after') {
+                    this.currencyPreview.textContent = `${formattedAmount} ${previewSettings.symbol}`;
+                } else {
+                    this.currencyPreview.textContent = `${previewSettings.symbol}${formattedAmount}`;
+                }
+            }
+        } else {
+            this.currencyPreview.textContent = '£1,234.56'; // Default fallback
+        }
+    }
+
+    // Handle settings form submission
+    handleSettingsSubmit(e) {
+        e.preventDefault();
+        
+        const selectedValue = this.currencySelect.value;
+        let newSettings;
+        
+        if (selectedValue === 'custom') {
+            // Validate custom currency inputs
+            const customCode = this.customCurrencyCode.value.trim();
+            const customSymbol = this.customCurrencySymbol.value.trim();
+            
+            if (!customCode || customCode.length === 0) {
+                this.showMessage('Please enter a currency code', 'error');
+                return;
+            }
+            
+            if (!customSymbol || customSymbol.length === 0) {
+                this.showMessage('Please enter a currency symbol', 'error');
+                return;
+            }
+            
+            newSettings = {
+                code: customCode.toUpperCase(),
+                symbol: customSymbol,
+                symbolPosition: this.symbolPosition.value,
+                locale: 'en-US'
+            };
+        } else if (selectedValue) {
+            newSettings = {
+                code: selectedValue
+            };
+        } else {
+            this.showMessage('Please select a currency', 'error');
+            return;
+        }
+        
+        // Update currency settings
+        window.dataManager.updateCurrencySettings(newSettings);
+        
+        // Show success message
+        this.showMessage('Currency settings updated successfully!', 'success');
+        
+        // Close modal
+        this.closeSettingsModal();
+        
+        // Update entire UI to reflect new currency
+        this.updateUI();
     }
 
     // Animate value counting
@@ -817,5 +975,6 @@ window.uiController = new UIController();
 // Global functions for onclick handlers
 window.closeEditModal = () => window.uiController.closeEditModal();
 window.closeBudgetModal = () => window.uiController.closeBudgetModal();
+window.closeSettingsModal = () => window.uiController.closeSettingsModal();
 window.closeImportModal = () => window.uiController.closeImportModal();
 window.closeCSVImportModal = () => window.uiController.closeCSVImportModal();

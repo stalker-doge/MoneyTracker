@@ -11,8 +11,14 @@ class DataManager {
         this.budgets = [];
         this.goals = [];
         this.activeBudgetId = 'default';
-        this.budget = 1000; // Default monthly budget in GBP
+        this.budget = 1000; // Default monthly budget
         this.currency = 'GBP'; // Default currency
+        this.currencySettings = {
+            code: 'GBP',
+            symbol: '£',
+            locale: 'en-GB',
+            symbolPosition: 'before' // 'before' or 'after'
+        };
         this.initializeData();
     }
 
@@ -20,6 +26,7 @@ class DataManager {
     initializeData() {
         const storedData = localStorage.getItem(this.storageKey);
         const storedBudget = localStorage.getItem(this.budgetStorageKey);
+        const storedCurrencySettings = localStorage.getItem('moneyTrackerCurrency');
         
         if (storedData) {
             try {
@@ -34,6 +41,16 @@ class DataManager {
 
         if (storedBudget) {
             this.budget = parseFloat(storedBudget);
+        }
+
+        // Load currency settings
+        if (storedCurrencySettings) {
+            try {
+                this.currencySettings = JSON.parse(storedCurrencySettings);
+            } catch (error) {
+                console.error('Error parsing currency settings:', error);
+                // Keep default settings
+            }
         }
 
         this.saveData();
@@ -91,6 +108,93 @@ class DataManager {
     saveData() {
         localStorage.setItem(this.storageKey, JSON.stringify(this.transactions));
         localStorage.setItem(this.budgetStorageKey, this.budget.toString());
+        localStorage.setItem('moneyTrackerCurrency', JSON.stringify(this.currencySettings));
+    }
+
+    // Get available currencies
+    getAvailableCurrencies() {
+        return [
+            { code: 'USD', symbol: '$', locale: 'en-US', name: 'US Dollar' },
+            { code: 'EUR', symbol: '€', locale: 'de-DE', name: 'Euro' },
+            { code: 'GBP', symbol: '£', locale: 'en-GB', name: 'British Pound' },
+            { code: 'JPY', symbol: '¥', locale: 'ja-JP', name: 'Japanese Yen' },
+            { code: 'CAD', symbol: 'C$', locale: 'en-CA', name: 'Canadian Dollar' },
+            { code: 'AUD', symbol: 'A$', locale: 'en-AU', name: 'Australian Dollar' },
+            { code: 'CHF', symbol: 'Fr', locale: 'de-CH', name: 'Swiss Franc' },
+            { code: 'CNY', symbol: '¥', locale: 'zh-CN', name: 'Chinese Yuan' },
+            { code: 'INR', symbol: '₹', locale: 'en-IN', name: 'Indian Rupee' },
+            { code: 'KRW', symbol: '₩', locale: 'ko-KR', name: 'South Korean Won' },
+            { code: 'BRL', symbol: 'R$', locale: 'pt-BR', name: 'Brazilian Real' },
+            { code: 'MXN', symbol: '$', locale: 'es-MX', name: 'Mexican Peso' },
+            { code: 'SEK', symbol: 'kr', locale: 'sv-SE', name: 'Swedish Krona' },
+            { code: 'NOK', symbol: 'kr', locale: 'nb-NO', name: 'Norwegian Krone' },
+            { code: 'DKK', symbol: 'kr', locale: 'da-DK', name: 'Danish Krone' },
+            { code: 'SGD', symbol: 'S$', locale: 'en-SG', name: 'Singapore Dollar' },
+            { code: 'HKD', symbol: 'HK$', locale: 'en-HK', name: 'Hong Kong Dollar' },
+            { code: 'NZD', symbol: 'NZ$', locale: 'en-NZ', name: 'New Zealand Dollar' },
+            { code: 'ZAR', symbol: 'R', locale: 'en-ZA', name: 'South African Rand' },
+            { code: 'RUB', symbol: '₽', locale: 'ru-RU', name: 'Russian Ruble' }
+        ];
+    }
+
+    // Get current currency settings
+    getCurrencySettings() {
+        return { ...this.currencySettings };
+    }
+
+    // Update currency settings
+    updateCurrencySettings(newSettings) {
+        if (newSettings.code) {
+            // Find preset currency or use custom settings
+            const presetCurrency = this.getAvailableCurrencies().find(c => c.code === newSettings.code);
+            
+            if (presetCurrency) {
+                this.currencySettings = {
+                    code: presetCurrency.code,
+                    symbol: presetCurrency.symbol,
+                    locale: presetCurrency.locale,
+                    symbolPosition: this.getSymbolPosition(presetCurrency.locale)
+                };
+            } else {
+                // Custom currency
+                this.currencySettings = {
+                    code: newSettings.code,
+                    symbol: newSettings.symbol || newSettings.code,
+                    locale: newSettings.locale || 'en-US',
+                    symbolPosition: newSettings.symbolPosition || 'before'
+                };
+            }
+        } else if (newSettings.symbol) {
+            // Custom symbol only
+            this.currencySettings.symbol = newSettings.symbol;
+            this.currencySettings.symbolPosition = newSettings.symbolPosition || 'before';
+        }
+
+        this.saveData();
+    }
+
+    // Get symbol position based on locale
+    getSymbolPosition(locale) {
+        const beforeLocales = ['en-US', 'en-GB', 'en-CA', 'en-AU', 'en-SG', 'en-HK', 'en-NZ', 'pt-BR', 'es-MX'];
+        return beforeLocales.includes(locale) ? 'before' : 'after';
+    }
+
+    // Format amount with current currency
+    formatCurrency(amount) {
+        try {
+            return new Intl.NumberFormat(this.currencySettings.locale, {
+                style: 'currency',
+                currency: this.currencySettings.code
+            }).format(amount);
+        } catch (error) {
+            // Fallback to manual formatting if Intl fails
+            const formattedAmount = amount.toFixed(2);
+            if (this.currencySettings.symbolPosition === 'after') {
+                return `${formattedAmount} ${this.currencySettings.symbol}`;
+            } else {
+                return `${this.currencySettings.symbol}${formattedAmount}`;
+            }
+        }
     }
 
     // Add new transaction
@@ -298,6 +402,7 @@ class DataManager {
         const data = {
             transactions: this.transactions,
             budget: this.budget,
+            currency: this.currencySettings,
             exportDate: new Date().toISOString()
         };
         

@@ -17,9 +17,14 @@
                     Money Tracker
                 </h1>
                 <p class="tagline">Track your spending with style</p>
-                <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
-                    <i class="fas fa-moon" id="themeIcon"></i>
-                </button>
+                <div class="header-controls">
+                    <button class="settings-toggle" id="settingsToggle" title="Currency Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -350,6 +355,73 @@
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Import CSV Data</button>
                     <button type="button" class="btn btn-secondary" onclick="uiController.closeCSVImportModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="uiController.closeSettingsModal()">&times;</span>
+            <h2><i class="fas fa-cog"></i> Currency Settings</h2>
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="currencySelect">Select Currency</label>
+                    <select id="currencySelect" required>
+                        <option value="">Choose a currency...</option>
+                        <option value="USD">🇺🇸 USD - US Dollar</option>
+                        <option value="EUR">🇪🇺 EUR - Euro</option>
+                        <option value="GBP">🇬🇧 GBP - British Pound</option>
+                        <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+                        <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+                        <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+                        <option value="CHF">🇨🇭 CHF - Swiss Franc</option>
+                        <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
+                        <option value="INR">🇮🇳 INR - Indian Rupee</option>
+                        <option value="KRW">🇰🇷 KRW - South Korean Won</option>
+                        <option value="BRL">🇧🇷 BRL - Brazilian Real</option>
+                        <option value="MXN">🇲🇽 MXN - Mexican Peso</option>
+                        <option value="SEK">🇸🇪 SEK - Swedish Krona</option>
+                        <option value="NOK">🇳🇴 NOK - Norwegian Krone</option>
+                        <option value="DKK">🇩🇰 DKK - Danish Krone</option>
+                        <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+                        <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
+                        <option value="NZD">🇳🇿 NZD - New Zealand Dollar</option>
+                        <option value="ZAR">🇿🇦 ZAR - South African Rand</option>
+                        <option value="RUB">🇷🇺 RUB - Russian Ruble</option>
+                        <option value="custom">🔧 Custom Currency</option>
+                    </select>
+                </div>
+                
+                <div id="customCurrencyFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customCurrencyCode">Currency Code</label>
+                            <input type="text" id="customCurrencyCode" placeholder="e.g., BTC" maxlength="3">
+                        </div>
+                        <div class="form-group">
+                            <label for="customCurrencySymbol">Currency Symbol</label>
+                            <input type="text" id="customCurrencySymbol" placeholder="e.g., ₿" maxlength="5">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="symbolPosition">Symbol Position</label>
+                        <select id="symbolPosition">
+                            <option value="before">Before amount (e.g., $100)</option>
+                            <option value="after">After amount (e.g., 100€)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="currency-preview">
+                    <h4>Preview:</h4>
+                    <div class="preview-amount" id="currencyPreview">£1,234.56</div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                    <button type="button" class="btn btn-secondary" onclick="uiController.closeSettingsModal()">Cancel</button>
                 </div>
             </form>
         </div>

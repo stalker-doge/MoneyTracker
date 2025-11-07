@@ -99,6 +99,43 @@ body {
     z-index: 1;
 }
 
+/* Header Controls */
+.header-controls {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.settings-toggle,
+.theme-toggle {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #FFB3C1;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 179, 193, 0.3);
+}
+
+.settings-toggle:hover,
+.theme-toggle:hover {
+    background: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 179, 193, 0.4);
+}
+
+.settings-toggle:active,
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
 .logo {
     font-size: 2.5rem;
     color: white;
@@ -785,8 +822,123 @@ input[type="file"]:focus {
     box-shadow: 0 0 0 3px var(--shadow-light);
 }
 
+/* Currency Settings Modal */
+.currency-preview {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.currency-preview h4 {
+    color: var(--bg-accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.preview-amount {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--bg-accent);
+    font-family: 'Courier New', monospace;
+}
+
+/* Custom Currency Fields */
+#customCurrencyFields {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+#customCurrencyFields .form-group {
+    margin-bottom: 1rem;
+}
+
+#customCurrencyFields .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Currency Select Styling */
+#currencySelect {
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+#currencySelect:focus {
+    outline: none;
+    border-color: var(--bg-tertiary);
+    box-shadow: 0 0 0 3px var(--shadow-light);
+}
+
+/* Settings Form Specific */
+#settingsForm .form-group {
+    margin-bottom: 1rem;
+}
+
+#settingsForm .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#settingsForm input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 12px;
+    font-size: 1rem;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+#settingsForm input[type="text"]:focus {
+    outline: none;
+    border-color: var(--bg-tertiary);
+    box-shadow: 0 0 0 3px var(--shadow-light);
+}
+
+#settingsForm select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 12px;
+    font-size: 1rem;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+#settingsForm select:focus {
+    outline: none;
+    border-color: var(--bg-tertiary);
+    box-shadow: 0 0 0 3px var(--shadow-light);
+}
+
+/* Modal Content Adjustments for Settings */
+#settingsModal .modal-content {
+    max-width: 600px;
+}
+
 /* Responsive Updates */
 @media (max-width: 768px) {
+    .header-controls {
+        position: static;
+        transform: none;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
     .header-actions {
         flex-direction: column;
         align-items: stretch;
@@ -799,5 +951,14 @@ input[type="file"]:focus {
     
     .import-preview pre {
         font-size: 0.7rem;
+    }
+    
+    #settingsModal .modal-content {
+        max-width: 95%;
+        margin: 5% auto;
+    }
+    
+    .preview-amount {
+        font-size: 1.5rem;
     }
 }
