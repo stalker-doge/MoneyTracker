@@ -173,6 +173,100 @@ This is a personal project, but feel free to:
 
 This project is open source and available under the MIT License.
 
+## 🌐 GitHub Pages Deployment
+
+This application is ready for deployment on GitHub Pages! Here's how to deploy it:
+
+### Prerequisites
+- A GitHub account
+- The project pushed to a GitHub repository
+
+### Deployment Steps
+
+**Option 1: Use the Deployment Script (Recommended)**
+
+*For macOS/Linux users:*
+1. Make the script executable:
+   ```bash
+   chmod +x deploy.sh
+   ```
+2. Run the deployment script:
+   ```bash
+   ./deploy.sh
+   ```
+
+*For Windows users:*
+1. Simply run the batch file:
+   ```cmd
+   deploy.bat
+   ```
+
+3. Follow the on-screen instructions
+
+**Option 2: Manual Deployment**
+1. **Push to GitHub** (if not already done):
+   ```bash
+   git add .
+   git commit -m "Initial commit - Money Tracker ready for deployment"
+   git remote add origin https://github.com/yourusername/money-tracker.git
+   git push -u origin main
+   ```
+
+2. **Enable GitHub Pages**:
+   - Go to your repository on GitHub
+   - Click on **Settings** tab
+   - Scroll down to **Pages** section
+   - Under **Build and deployment**, select **Source**: Deploy from a branch
+   - Select **Branch**: main (or master)
+   - Select **Folder**: / (root)
+   - Click **Save**
+
+3. **Wait for deployment**:
+   - GitHub will build and deploy your site
+   - This usually takes 1-2 minutes
+   - You'll see a green checkmark when ready
+
+4. **Access your site**:
+   - Go to Settings > Pages
+   - Your site will be available at: `https://yourusername.github.io/money-tracker/`
+
+### Features Available on GitHub Pages
+✅ **Static Site**: Perfect for GitHub Pages (no server requirements)  
+✅ **Offline Support**: Service worker works for offline access  
+✅ **Responsive Design**: Works on all devices  
+✅ **Data Privacy**: All data stored locally in browser  
+✅ **Fast Loading**: Optimized assets and CDN resources  
+
+### Troubleshooting
+
+**404 Errors**:
+- Make sure you're deploying from the root folder (/)
+- Check that your repository name matches the URL path
+
+**Service Worker Issues**:
+- Clear browser cache after deployment
+- The service worker may need to update on first visit
+
+**Styling Issues**:
+- Ensure all CSS files are committed
+- Check browser console for any resource loading errors
+
+### Custom Domain (Optional)
+To use a custom domain with GitHub Pages:
+
+1. Add a `CNAME` file to your repository root with your domain
+2. Configure DNS settings with your domain provider
+3. Update GitHub Pages settings to use the custom domain
+
+### Updating the Site
+Simply push changes to your main branch:
+```bash
+git add .
+git commit -m "Update features"
+git push origin main
+```
+GitHub Pages will automatically redeploy your site!
+
 ## 🎯 Future Enhancements
 
 - [ ] Dark mode support
