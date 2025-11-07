@@ -1,13 +1,13 @@
 // Service Worker for Money Tracker - Offline Support
 const CACHE_NAME = 'money-tracker-v1.0.0';
 const urlsToCache = [
-  './',
-  './index.html',
-  './css/styles.css',
-  './js/app.js',
-  './js/data-manager.js',
-  './js/chart-config.js',
-  './js/ui-controller.js',
+  '/',
+  '/index.html',
+  '/css/styles.css',
+  '/js/app.js',
+  '/js/data-manager.js',
+  '/js/chart-config.js',
+  '/js/ui-controller.js',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://cdn.jsdelivr.net/npm/chart.js'
 ];
@@ -65,7 +65,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // Return fallback page for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+          return caches.match('/index.html');
         }
         
         // Return a generic offline response
